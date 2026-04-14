@@ -25,7 +25,7 @@ const GLOBAL = {
   activeNodes:         914203,
   countriesReached:    97,
   questionsProcessed:  48291,
-  jammingCities:       ["Athens", "São Paulo", "Seoul", "Lagos"],
+  jammingCities:       ["Athens","Istanbul","Dhaka","Seoul","São Paulo","Jakarta","Lagos","Cairo","Mexico City","Karachi"],
 };
 
 const TASKS = [
@@ -78,17 +78,37 @@ const TASKS = [
   },
 ];
 
+// Global map nodes — 20 cities, equirectangular projection
+// x = (lng+180)/360*100, y = (90-lat)/180*100
 const JAM_MAP_NODES = [
-  { id: "athens",    label: "Athens",     x: 55, y: 33, size: 18, severity: 0.91, jamIndex: 0.91, active: true,  pop: "Athens, GR · Index: 91% · Active since 04:17" },
-  { id: "seoul",     label: "Seoul",      x: 79, y: 28, size: 16, severity: 0.84, jamIndex: 0.84, active: true,  pop: "Seoul, KR · Index: 84% · Active since 08:03" },
-  { id: "saopaulo",  label: "São Paulo",  x: 27, y: 63, size: 14, severity: 0.77, jamIndex: 0.77, active: true,  pop: "São Paulo, BR · Index: 77% · Active since 14:52" },
-  { id: "lagos",     label: "Lagos",      x: 49, y: 53, size: 12, severity: 0.71, jamIndex: 0.71, active: true,  pop: "Lagos, NG · Index: 71% · Active since 09:30" },
-  { id: "london",    label: "London",     x: 44, y: 24, size: 8,  severity: 0.44, jamIndex: 0.44, active: false, pop: "London, UK · Index: 44% · Monitoring" },
-  { id: "chicago",   label: "Chicago",    x: 19, y: 32, size: 8,  severity: 0.38, jamIndex: 0.38, active: false, pop: "Chicago, US · Index: 38% · Monitoring" },
-  { id: "mumbai",    label: "Mumbai",     x: 68, y: 45, size: 9,  severity: 0.52, jamIndex: 0.52, active: false, pop: "Mumbai, IN · Index: 52% · Elevated" },
-  { id: "nairobi",   label: "Nairobi",    x: 57, y: 55, size: 7,  severity: 0.34, jamIndex: 0.34, active: false, pop: "Nairobi, KE · Index: 34% · Normal" },
-  { id: "berlin",    label: "Berlin",     x: 51, y: 21, size: 7,  severity: 0.41, jamIndex: 0.41, active: false, pop: "Berlin, DE · Index: 41% · Monitoring" },
-  { id: "sydney",    label: "Sydney",     x: 83, y: 73, size: 8,  severity: 0.47, jamIndex: 0.47, active: false, pop: "Sydney, AU · Index: 47% · Monitoring" },
+  { id: "athens",    label: "Athens",      x: 56.7, y: 28.9, size: 18, severity: 0.91, jamIndex: 0.91, active: true,  pop: "Athens, GR · Index: 91% · Active since 04:17" },
+  { id: "istanbul",  label: "Istanbul",    x: 58.1, y: 27.2, size: 15, severity: 0.82, jamIndex: 0.82, active: true,  pop: "Istanbul, TR · Index: 82% · Active since 05:44" },
+  { id: "dhaka",     label: "Dhaka",       x: 75.0, y: 36.7, size: 15, severity: 0.86, jamIndex: 0.86, active: true,  pop: "Dhaka, BD · Index: 86% · Active since 03:10" },
+  { id: "seoul",     label: "Seoul",       x: 85.3, y: 29.4, size: 16, severity: 0.84, jamIndex: 0.84, active: true,  pop: "Seoul, KR · Index: 84% · Active since 08:03" },
+  { id: "saopaulo",  label: "São Paulo",   x: 37.2, y: 62.8, size: 14, severity: 0.77, jamIndex: 0.77, active: true,  pop: "São Paulo, BR · Index: 77% · Active since 14:52" },
+  { id: "jakarta",   label: "Jakarta",     x: 79.7, y: 53.3, size: 13, severity: 0.73, jamIndex: 0.73, active: true,  pop: "Jakarta, ID · Index: 73% · Active since 02:30" },
+  { id: "lagos",     label: "Lagos",       x: 50.8, y: 46.7, size: 13, severity: 0.71, jamIndex: 0.71, active: true,  pop: "Lagos, NG · Index: 71% · Active since 09:30" },
+  { id: "cairo",     label: "Cairo",       x: 58.6, y: 33.3, size: 12, severity: 0.68, jamIndex: 0.68, active: true,  pop: "Cairo, EG · Index: 68% · Active since 06:55" },
+  { id: "mexicocity",label: "Mexico City", x: 22.5, y: 39.4, size: 12, severity: 0.65, jamIndex: 0.65, active: true,  pop: "Mexico City, MX · Index: 65% · Active since 13:20" },
+  { id: "karachi",   label: "Karachi",     x: 68.6, y: 36.1, size: 11, severity: 0.61, jamIndex: 0.61, active: true,  pop: "Karachi, PK · Index: 61% · Active since 01:45" },
+  { id: "tokyo",     label: "Tokyo",       x: 88.9, y: 30.0, size: 11, severity: 0.55, jamIndex: 0.55, active: false, pop: "Tokyo, JP · Index: 55% · Elevated" },
+  { id: "mumbai",    label: "Mumbai",      x: 70.3, y: 39.4, size: 10, severity: 0.52, jamIndex: 0.52, active: false, pop: "Mumbai, IN · Index: 52% · Elevated" },
+  { id: "losangeles",label: "Los Angeles", x: 17.2, y: 31.1, size: 10, severity: 0.49, jamIndex: 0.49, active: false, pop: "Los Angeles, US · Index: 49% · Elevated" },
+  { id: "sydney",    label: "Sydney",      x: 91.9, y: 68.9, size: 9,  severity: 0.47, jamIndex: 0.47, active: false, pop: "Sydney, AU · Index: 47% · Monitoring" },
+  { id: "london",    label: "London",      x: 50.0, y: 21.7, size: 9,  severity: 0.44, jamIndex: 0.44, active: false, pop: "London, UK · Index: 44% · Monitoring" },
+  { id: "moscow",    label: "Moscow",      x: 60.3, y: 18.9, size: 9,  severity: 0.43, jamIndex: 0.43, active: false, pop: "Moscow, RU · Index: 43% · Monitoring" },
+  { id: "berlin",    label: "Berlin ◉",    x: 53.6, y: 21.1, size: 9,  severity: 0.41, jamIndex: 0.41, active: false, pop: "Berlin, DE · Index: 41% · Local · Monitoring" },
+  { id: "chicago",   label: "Chicago",     x: 25.8, y: 26.7, size: 8,  severity: 0.38, jamIndex: 0.38, active: false, pop: "Chicago, US · Index: 38% · Monitoring" },
+  { id: "buenosaires",label:"Buenos Aires",x: 33.9, y: 68.9, size: 8,  severity: 0.36, jamIndex: 0.36, active: false, pop: "Buenos Aires, AR · Index: 36% · Monitoring" },
+  { id: "nairobi",   label: "Nairobi",     x: 60.3, y: 50.6, size: 7,  severity: 0.34, jamIndex: 0.34, active: false, pop: "Nairobi, KE · Index: 34% · Normal" },
+];
+
+// Berlin local jam zones
+const BERLIN_JAM_ZONES = [
+  { id: "kudamm", name: "Ku'damm Corridor",  severity: 0.82, since: "06:14", note: "Charlottenburg · both directions at standstill", active: true  },
+  { id: "a100",   name: "A100 Westkreuz",    severity: 0.75, since: "07:45", note: "Schöneberg / Tempelhof · motorway gridlock",     active: true  },
+  { id: "alex",   name: "Alexanderplatz",    severity: 0.68, since: "08:30", note: "Mitte · surface streets and plaza blocked",       active: true  },
+  { id: "pberg",  name: "Prenzlauer Berg",   severity: 0.44, since: "09:12", note: "Elevated signal · no surface jam yet",            active: false },
 ];
 
 const RESEARCH_CARDS = [
@@ -240,85 +260,365 @@ function MiniBar({ value, color = "var(--teal)" }) {
 }
 
 // ═══════════════════════════════════════════════════════════
-// ONBOARDING
+// INTRO — cinematic 11-card narrative onboarding
 // ═══════════════════════════════════════════════════════════
 
-function Onboarding({ onDone }) {
-  const [step, setStep]         = useState(0);
+function Intro({ onDone }) {
+  const [step, setStep] = useState(0);
   const [calibWord, setCalibWord] = useState(null);
+  const TOTAL = 11;
+  const CALIB_WORDS = ["Threshold", "Drift", "Convergence", "Signal", "Before", "Between"];
 
-  const steps = [
-    {
-      s: "Welcome · Mycelium v3.1",
-      t: "The network is forming whether or not you participate.",
-      b: "Traffic jams lasting for days. Cities standing still. No accident. No cause. No solution.\n\nResearchers have found a signal that precedes each event — not in roads or logistics, but in cognitive pattern data. In how people think, independently, before a Jam begins.\n\nMYCELIUM was built to measure, and perhaps understand, that signal.",
-    },
-    {
-      s: "What MYCELIUM Is",
-      t: "Not artificial intelligence. Collective intelligence.",
-      b: "AI only orchestrates.\n\nHere, humans generate the intelligence. Your decisions, associations, predictions, and patterns — distributed across hundreds of thousands of participants — are recombined into something greater.\n\nMYCI is the interface to that collective. Not a chatbot. A synthesis of you and everyone like you.",
-    },
-    {
-      s: "Your Role",
-      t: "You contribute. The network evolves.",
-      b: "When you answer a question or complete a task, your response is anonymized and distributed into the cognitive layer. Others' responses return to shape yours.\n\nThe more you contribute, the more precisely MYCI can respond to you. Access is proportional to input.\n\nYou will not always understand what you are contributing to. This is expected.",
-      consent: true,
-    },
-    {
-      s: "Calibration",
-      t: "One signal before we begin.",
-      b: "Select the word that feels most correct right now — not the most accurate, the most correct.",
-      calib: true,
-    },
+  const cards = [
+    { dark: true,  bg: "var(--ink)",     headline: "We should talk.",                    centered: true },
+    { dark: false, bg: "var(--bg)",      eyebrow: "The Jam",          special: "jam_stats" },
+    { dark: false, bg: "var(--bg)",      eyebrow: "The Reach",        headline: "It's not just traffic.", special: "places" },
+    { dark: false, bg: "var(--bg2)",     eyebrow: "The Mystery",      headline: "No one can explain it.", special: "theories" },
+    { dark: false, bg: "var(--surface)", eyebrow: "The Hypothesis",   headline: "The Mycelium Hypothesis", special: "hypothesis" },
+    { dark: false, bg: "var(--bg)",      eyebrow: "The Evidence",     headline: "We tested it.", special: "alignment" },
+    { dark: false, bg: "var(--surface)", eyebrow: "Why Now",          headline: "Why now?", special: "earthlings" },
+    { dark: true,  bg: "var(--ink)",     eyebrow: "The Shift",        headline: "A shift is happening.", special: "ci_shift" },
+    { dark: false, bg: "var(--bg)",      eyebrow: "Your Role",        headline: "This is where you come in.", special: "role" },
+    { dark: false, bg: "var(--surface)", eyebrow: "The Organization", headline: "MYCELIUM Research Initiative", special: "org" },
+    { dark: true,  bg: "var(--ink)",     headline: "Now…\nwe should talk.", special: "calibration" },
   ];
 
-  const calibWords = ["Threshold", "Drift", "Convergence", "Signal", "Before", "Between"];
-  const s = steps[step];
+  const card = cards[step];
+  const isDark = card.dark;
+  const textColor = isDark ? "#F7F5F0" : "var(--ink)";
+  const subColor  = isDark ? "rgba(247,245,240,0.55)" : "var(--ink3)";
+
+  const advance = () => {
+    if (step < TOTAL - 1) {
+      setStep(s => s + 1);
+    } else {
+      onDone();
+    }
+  };
+
+  const renderBody = () => {
+    switch (card.special) {
+      case "jam_stats":
+        return (
+          <div>
+            <p style={{ color: subColor, marginBottom: 20, lineHeight: 1.8 }}>
+              Maybe you saw it.<br />
+              Maybe you were inside it.
+            </p>
+            <p style={{ color: subColor, marginBottom: 28, lineHeight: 1.8 }}>
+              Sudden slowdowns.<br />
+              Everything stopping for no clear reason.
+            </p>
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 76, fontWeight: 700, color: "var(--teal)", lineHeight: 1, marginBottom: 6 }}>98%</div>
+              <div style={{ fontSize: 13, color: subColor, letterSpacing: "0.04em" }}>of people have heard about it</div>
+            </div>
+            <p style={{ color: subColor, lineHeight: 1.8 }}>Most have already experienced it.</p>
+          </div>
+        );
+
+      case "places":
+        return (
+          <div>
+            <p style={{ color: subColor, marginBottom: 24, lineHeight: 1.8 }}>
+              It happens in cities.<br />
+              But also in places where congestion never existed.
+            </p>
+            <div style={{ paddingLeft: 16, borderLeft: "2px solid var(--coral-mid)", marginBottom: 28 }}>
+              {[
+                { text: "Sea routes.",   size: 17, color: "var(--coral)",       opacity: 1.0 },
+                { text: "Airspaces.",    size: 16, color: "var(--coral-light)", opacity: 0.8 },
+                { text: "Rural areas.",  size: 15, color: subColor,             opacity: 0.65 },
+              ].map((item, i) => (
+                <p key={i} style={{ fontStyle: "italic", color: item.color, fontSize: item.size, marginBottom: 8, opacity: item.opacity }}>{item.text}</p>
+              ))}
+            </div>
+            <p style={{ color: subColor, marginBottom: 12 }}>Places that were always… fine.</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 22, color: textColor }}>Until now.</p>
+          </div>
+        );
+
+      case "theories": {
+        const theories = ["Technology.", "Behavior.", "Environment.", "Beliefs."];
+        return (
+          <div>
+            <p style={{ color: subColor, marginBottom: 16, lineHeight: 1.7 }}>There are theories.</p>
+            <div style={{ marginBottom: 24, display: "flex", flexWrap: "wrap", gap: 6 }}>
+              {theories.map((t, i) => (
+                <span key={i} style={{ textDecoration: "line-through", textDecorationColor: "var(--gold)", textDecorationThickness: 2, color: "var(--ink3)", fontSize: 15 }}>{t}</span>
+              ))}
+            </div>
+            <p style={{ color: subColor, lineHeight: 1.8, marginBottom: 32 }}>
+              Some say it's artificial.<br />
+              Some say it's natural.<br />
+              Some turned it into ideology.
+            </p>
+            <div style={{ borderTop: "1px solid var(--bg3)", paddingTop: 24 }}>
+              <p style={{ color: subColor, marginBottom: 10 }}>None of them hold.</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, fontWeight: 700, color: "var(--gold)" }}>Except one.</p>
+            </div>
+          </div>
+        );
+      }
+
+      case "hypothesis":
+        return (
+          <div>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 19, color: subColor, lineHeight: 1.65, marginBottom: 16 }}>
+              What if The Jam isn't happening on the streets…
+            </p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 22, fontWeight: 600, color: "var(--teal)", lineHeight: 1.5 }}>
+              but in our minds?
+            </p>
+          </div>
+        );
+
+      case "alignment":
+        return (
+          <div>
+            <p style={{ color: subColor, lineHeight: 1.8, marginBottom: 20 }}>
+              Across thousands of people.<br />
+              Across hundreds of places.
+            </p>
+            <p style={{ color: subColor, marginBottom: 12 }}>And something appeared:</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 40, fontWeight: 700, fontStyle: "italic", color: "var(--teal)", marginBottom: 24, lineHeight: 1 }}>alignment.</p>
+            <p style={{ color: subColor, marginBottom: 6, fontSize: 14 }}>We call it:</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 19, fontWeight: 700, color: textColor, marginBottom: 20 }}>The Mycelium Index</p>
+            <p style={{ color: subColor }}>And it correlates with The Jam.</p>
+          </div>
+        );
+
+      case "earthlings": {
+        const lines = [
+          { text: "Because we've never been this connected.", indent: 0,  italic: false },
+          { text: "We share the same spaces.",                indent: 0,  italic: false },
+          { text: "The same data.",                           indent: 12, italic: false },
+          { text: "The same signals.",                        indent: 24, italic: false },
+          { text: "Through cities, media, systems.",          indent: 0,  italic: false },
+          { text: "Despite everything that divides us…",      indent: 0,  italic: true  },
+          { text: "something is aligning.",                   indent: 0,  italic: true  },
+        ];
+        return (
+          <div>
+            {lines.map((line, i) => (
+              <p key={i} style={{ color: subColor, marginBottom: 8, paddingLeft: line.indent, lineHeight: 1.7, fontStyle: line.italic ? "italic" : "normal" }}>{line.text}</p>
+            ))}
+            <p style={{ marginTop: 20, fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700, color: "var(--teal)" }}>
+              We are becoming <em>earthlings</em>.
+            </p>
+          </div>
+        );
+      }
+
+      case "ci_shift":
+        return (
+          <div>
+            <p style={{ color: subColor, marginBottom: 32, lineHeight: 1.8 }}>
+              AI helped us process knowledge.<br />
+              But something else is emerging.
+            </p>
+            <div style={{ marginBottom: 28 }}>
+              <p style={{ textDecoration: "line-through", textDecorationColor: "rgba(247,245,240,0.25)", color: "rgba(247,245,240,0.25)", fontSize: 14, letterSpacing: "0.06em", marginBottom: 12 }}>
+                AI — Artificial Intelligence
+              </p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 700, color: "var(--teal-light)", letterSpacing: "-0.01em" }}>
+                CI — Collective Intelligence
+              </p>
+            </div>
+            <p style={{ color: subColor, lineHeight: 2.2, letterSpacing: "0.02em" }}>
+              Not artificial.<br />
+              Human.
+            </p>
+          </div>
+        );
+
+      case "role":
+        return (
+          <div>
+            <p style={{ color: subColor, marginBottom: 20, lineHeight: 1.8 }}>
+              This app is not just a tool.<br />
+              It's an interface.
+            </p>
+            <p style={{ color: subColor, marginBottom: 20, lineHeight: 1.8 }}>
+              You ask questions.<br />
+              You get answers shaped by many minds.
+            </p>
+            <p style={{ color: subColor, marginBottom: 16, lineHeight: 1.8 }}>Sometimes, it asks you something small.</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", color: textColor, fontSize: 18, marginBottom: 20 }}>Quick. Simple.</p>
+            <p style={{ color: subColor, lineHeight: 1.8 }}>
+              That's how we measure alignment.<br />
+              That's how we build it.
+            </p>
+          </div>
+        );
+
+      case "org":
+        return (
+          <div>
+            <div style={{ marginBottom: 24 }}>
+              {["Non-profit.", "Transparent.", "Globally collaborative."].map((item, i) => (
+                <p key={i} style={{ color: "var(--sage)", fontSize: 14, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ color: "var(--teal)", fontSize: 12 }}>✓</span> {item}
+                </p>
+              ))}
+            </div>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 700, color: "var(--ink)", marginBottom: 24 }}>No ads.</p>
+            <p style={{ color: subColor, lineHeight: 1.8, marginBottom: 24 }}>Your data is anonymized from the first moment.</p>
+            <div style={{ borderTop: "1px solid var(--bg3)", paddingTop: 20 }}>
+              <p style={{ color: subColor, lineHeight: 1.8, marginBottom: 4 }}>You don't have terms and conditions.</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>We do.</p>
+              <p style={{ color: subColor }}>To serve civilization.</p>
+            </div>
+          </div>
+        );
+
+      case "calibration":
+        return (
+          <div>
+            <p style={{ color: subColor, marginBottom: 24, lineHeight: 1.7, fontSize: 15 }}>
+              One signal before we begin.<br />
+              Select the word that feels most correct right now —<br />
+              not the most accurate, the most correct.
+            </p>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {CALIB_WORDS.map(w => (
+                <button
+                  key={w}
+                  onClick={() => setCalibWord(w)}
+                  style={{
+                    flex: "1 1 calc(33% - 8px)",
+                    padding: "11px 8px",
+                    border: `1px solid ${calibWord === w ? "var(--teal)" : "rgba(247,245,240,0.18)"}`,
+                    borderRadius: 8,
+                    background: calibWord === w ? "rgba(45,125,111,0.22)" : "rgba(247,245,240,0.04)",
+                    color: calibWord === w ? "var(--teal-light)" : "rgba(247,245,240,0.65)",
+                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontSize: 13,
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                  }}
+                >
+                  {w}
+                </button>
+              ))}
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="ob">
-      <div style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontWeight: 700, fontSize: 26, color: "var(--teal)", marginBottom: 10, letterSpacing: "-0.01em" }}>
-        Mycelium
-      </div>
-      <div className="pdots">
-        {steps.map((_, i) => (
-          <div key={i} className={`pdot ${i < step ? "done" : i === step ? "active" : ""}`} />
-        ))}
-      </div>
-      <div className="ob-step">{s.s}</div>
-      <div className="ob-title">{s.t}</div>
-      <div className="ob-body" style={{ whiteSpace: "pre-wrap" }}>{s.b}</div>
+    <div style={{
+      minHeight: "100dvh",
+      maxWidth: 430,
+      margin: "0 auto",
+      display: "flex",
+      flexDirection: "column",
+      padding: "0 28px 40px",
+      position: "relative",
+      background: card.bg,
+      transition: "background 0.5s ease",
+    }}>
 
-      {s.consent && (
-        <div className="info-box">
-          Participation note: MYCELIUM cannot guarantee that measuring cognitive convergence does not also reinforce it. This loop is acknowledged. It may be unsolvable. Consent indicates understanding, not approval.
-        </div>
+      {/* Progress bar */}
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: isDark ? "rgba(247,245,240,0.08)" : "var(--bg3)" }}>
+        <div style={{ height: "100%", background: "var(--teal)", width: `${((step + 1) / TOTAL) * 100}%`, transition: "width 0.4s ease" }} />
+      </div>
+
+      {/* Skip — hidden on final card */}
+      {step < TOTAL - 1 && (
+        <button
+          onClick={() => setStep(TOTAL - 1)}
+          style={{
+            position: "absolute", top: 20, right: 24,
+            background: "none", border: "none", padding: 0,
+            fontSize: 12, letterSpacing: "0.05em", cursor: "pointer",
+            color: isDark ? "rgba(247,245,240,0.3)" : "var(--ink4)",
+          }}
+        >
+          skip →
+        </button>
       )}
 
-      {s.calib && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "12px 0" }}>
-          {calibWords.map(w => (
-            <button key={w} className="option" onClick={() => setCalibWord(w)}
-              style={{
-                width: "auto", flex: "1 1 calc(33% - 8px)", textAlign: "center",
-                background:   calibWord === w ? "var(--teal-pale)" : undefined,
-                borderColor:  calibWord === w ? "var(--teal)"      : undefined,
-                color:        calibWord === w ? "var(--teal)"       : undefined,
-              }}>
-              {w}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Card area */}
+      <div
+        key={step}
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: card.centered ? "center" : "flex-start",
+          paddingTop: card.centered ? 0 : 68,
+          animation: "fadeUp 0.45s ease both",
+        }}
+      >
+        {card.eyebrow && (
+          <div style={{
+            fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase",
+            color: isDark ? "rgba(247,245,240,0.3)" : "var(--ink4)",
+            marginBottom: 18,
+          }}>
+            {card.eyebrow}
+          </div>
+        )}
 
-      <div style={{ marginTop: "auto", paddingTop: 20 }}>
-        <button className="ob-btn"
-          disabled={s.calib && !calibWord}
-          onClick={() => step < steps.length - 1 ? setStep(s => s + 1) : onDone()}>
-          {step === steps.length - 1 ? "Enter the Network →" : "Continue"}
+        {/* Card 2 gets a serif headline built inside renderBody */}
+        {card.special === "jam_stats" && (
+          <h1 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: "clamp(24px, 7vw, 36px)",
+            fontWeight: 700, lineHeight: 1.2,
+            color: textColor, marginBottom: 28, letterSpacing: "-0.01em",
+          }}>
+            You've come across<br /><em>The Jam.</em>
+          </h1>
+        )}
+
+        {card.headline && !card.special?.startsWith("jam") && (
+          <h1 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: card.centered ? "clamp(32px, 9vw, 52px)" : "clamp(22px, 7vw, 36px)",
+            fontWeight: 700, lineHeight: 1.15,
+            color: textColor, marginBottom: 28,
+            letterSpacing: "-0.01em",
+            whiteSpace: "pre-wrap",
+            textAlign: card.centered ? "center" : "left",
+          }}>
+            {card.headline}
+          </h1>
+        )}
+
+        {renderBody()}
+      </div>
+
+      {/* Navigation */}
+      <div style={{ paddingTop: 24, display: "flex", flexDirection: "column", gap: 8 }}>
+        <button
+          className="ob-btn"
+          disabled={card.special === "calibration" && !calibWord}
+          onClick={advance}
+          style={{
+            background: isDark ? "rgba(45,125,111,0.9)" : undefined,
+            borderColor: isDark ? "transparent" : undefined,
+            color: isDark ? "#F7F5F0" : undefined,
+          }}
+        >
+          {step === TOTAL - 1 ? "Enter the Network →" : "Continue"}
         </button>
         {step > 0 && (
-          <button className="ob-btn-ghost" onClick={() => setStep(s => s - 1)}>← Back</button>
+          <button
+            className="ob-btn-ghost"
+            onClick={() => setStep(s => s - 1)}
+            style={{
+              color: isDark ? "rgba(247,245,240,0.45)" : undefined,
+              borderColor: isDark ? "rgba(247,245,240,0.12)" : undefined,
+            }}
+          >
+            ← Back
+          </button>
         )}
       </div>
     </div>
@@ -971,7 +1271,7 @@ function DashboardScreen({ user }) {
           { label: "Active Nodes",   val: "914K" },
           { label: "Countries",      val: "97" },
           { label: "Questions/day",  val: "48K" },
-          { label: "Jamming Cities", val: "4" },
+          { label: "Jamming Cities", val: "20" },
         ].map((c, i) => (
           <div key={i} className="dash-cell">
             <div className="dash-val">{c.val}</div>
@@ -1069,12 +1369,174 @@ function InsightsScreen({ user }) {
 // MAP SCREEN — dual view: Local Jams / Global Index
 // ═══════════════════════════════════════════════════════════
 
+// ═══════════════════════════════════════════════════════════
+// BERLIN MAP — stylised SVG street map with jam highlights
+// ═══════════════════════════════════════════════════════════
+
+function BerlinMap({ selectedZone, setSelectedZone }) {
+  // Center = Brandenburg Gate. Scale: 1px ≈ 65m. Ring radius ~75px.
+  const cx = 182, cy = 122;
+
+  // Street segments [x1,y1,x2,y2,weight]
+  const streets = [
+    // Unter den Linden (E–W through center)
+    [cx - 52, cy,      cx + 58, cy,      2.2],
+    // Ku'damm (W from Breitscheidplatz)
+    [cx - 8,  cy + 3,  cx - 62, cy + 5,  2],
+    // Friedrichstraße (N–S)
+    [cx + 10, cy - 68, cx + 10, cy + 70, 1.6],
+    // Torstraße (horizontal, N of center)
+    [cx - 50, cy - 22, cx + 72, cy - 24, 1.2],
+    // Karl-Marx-Allee (NE from Alexanderplatz area)
+    [cx + 56, cy - 2,  cx + 98, cy - 36, 1.6],
+    // Landsberger Allee (further NE)
+    [cx + 58, cy - 8,  cx + 105,cy - 42, 1],
+    // Schönhauser Allee (NE from Mitte)
+    [cx + 14, cy - 18, cx + 62, cy - 58, 1.2],
+    // Prenzlauer Allee (N)
+    [cx + 20, cy - 10, cx + 65, cy - 60, 1],
+    // Potsdamer Str (SW)
+    [cx - 4,  cy + 14, cx - 20, cy + 90, 1.6],
+    // Mehringdamm (SE)
+    [cx + 6,  cy + 18, cx + 32, cy + 88, 1.2],
+    // Müllerstraße (N–W)
+    [cx - 10, cy - 22, cx - 22, cy - 78, 1.2],
+    // Gitschiner Str (SE, Kreuzberg)
+    [cx + 2,  cy + 20, cx + 55, cy + 52, 1],
+    // Warschauer Str (E ring crosser)
+    [cx + 60, cy - 6,  cx + 60, cy + 38, 1.2],
+    // Spandauer Damm / Heerstraße (W, faint)
+    [cx - 52, cy + 5,  cx - 100,cy + 10, 1],
+    // E–W cross street (Oranienburger)
+    [cx - 40, cy - 38, cx + 55, cy - 40, 0.8],
+    // E–W cross street (Gitschiner lower)
+    [cx - 30, cy + 38, cx + 60, cy + 36, 0.8],
+  ];
+
+  return (
+    <div>
+      {/* SVG street map */}
+      <svg
+        viewBox="0 0 374 238"
+        style={{ width: "100%", height: "auto", background: "var(--bg2)", borderRadius: 10, display: "block" }}
+      >
+        {/* S-Bahn Ringbahn */}
+        <ellipse cx={cx} cy={cy} rx={80} ry={65}
+          fill="none" stroke="#BEB9B1" strokeWidth="1.8" strokeDasharray="5,3.5" />
+        <text x={cx + 82} y={cy - 8} fontSize="6.5" fill="var(--ink4)" textAnchor="start"
+          fontFamily="'Plus Jakarta Sans', sans-serif">S-Ring</text>
+
+        {/* Street base */}
+        {streets.map(([x1,y1,x2,y2,w], i) => (
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2}
+            stroke="#D0CBc4" strokeWidth={w} strokeLinecap="round" />
+        ))}
+
+        {/* ── JAM: Ku'damm Corridor (coral thick overlay) ── */}
+        <line x1={cx - 8} y1={cy + 3} x2={cx - 62} y2={cy + 5}
+          stroke="var(--coral)" strokeWidth="6" strokeLinecap="round" opacity="0.55" />
+        {/* click target */}
+        <rect x={cx - 65} y={cy - 5} width={60} height={14} rx="4" fill="transparent"
+          style={{ cursor: "pointer" }}
+          onClick={() => setSelectedZone(z => z === "kudamm" ? null : "kudamm")} />
+
+        {/* ── JAM: A100 Westkreuz (arc, west of ring) ── */}
+        <path d="M 103,175 Q 88,148 90,120 Q 90,100 100,82"
+          fill="none" stroke="var(--coral)" strokeWidth="6" strokeLinecap="round" opacity="0.55" />
+        {/* click target */}
+        <ellipse cx={93} cy={128} rx={16} ry={42} fill="transparent"
+          style={{ cursor: "pointer" }}
+          onClick={() => setSelectedZone(z => z === "a100" ? null : "a100")} />
+
+        {/* ── JAM: Alexanderplatz halo ── */}
+        <circle cx={cx + 55} cy={cy - 1} r={11} fill="var(--coral)" opacity="0.22" />
+        <circle cx={cx + 55} cy={cy - 1} r={6}  fill="var(--coral)" opacity="0.6"
+          style={{ cursor: "pointer" }}
+          onClick={() => setSelectedZone(z => z === "alex" ? null : "alex")} />
+        <circle cx={cx + 55} cy={cy - 1} r={14} fill="none"
+          stroke="var(--coral)" strokeWidth="1" opacity="0.35"
+          style={{ animation: "ripple 2.2s ease-out infinite" }} />
+
+        {/* ── MONITOR: Prenzlauer Berg (gold segment on Schönhauser Allee) ── */}
+        <line x1={cx + 24} y1={cy - 22} x2={cx + 60} y2={cy - 56}
+          stroke="var(--gold)" strokeWidth="5" strokeLinecap="round" opacity="0.55" />
+        {/* click target */}
+        <line x1={cx + 24} y1={cy - 22} x2={cx + 60} y2={cy - 56}
+          stroke="transparent" strokeWidth="14" strokeLinecap="round"
+          style={{ cursor: "pointer" }}
+          onClick={() => setSelectedZone(z => z === "pberg" ? null : "pberg")} />
+
+        {/* District labels */}
+        <text x={cx - 36} y={cy + 15} fontSize="7.5" fill="var(--ink3)" textAnchor="middle"
+          fontFamily="'Plus Jakarta Sans', sans-serif">Charlottenburg</text>
+        <text x={cx + 28} y={cy - 28} fontSize="7.5" fill="var(--ink4)" textAnchor="middle"
+          fontFamily="'Plus Jakarta Sans', sans-serif">Mitte</text>
+        <text x={cx + 70} y={cy + 42} fontSize="7.5" fill="var(--ink4)" textAnchor="middle"
+          fontFamily="'Plus Jakarta Sans', sans-serif">Friedrichshain</text>
+        <text x={cx + 52} y={cy - 62} fontSize="7.5" fill="var(--ink4)" textAnchor="middle"
+          fontFamily="'Plus Jakarta Sans', sans-serif">Prenzlauer Berg</text>
+        <text x={cx + 22} y={cy + 62} fontSize="7.5" fill="var(--ink4)" textAnchor="middle"
+          fontFamily="'Plus Jakarta Sans', sans-serif">Kreuzberg</text>
+        <text x={cx - 24} y={cy - 68} fontSize="7.5" fill="var(--ink4)" textAnchor="middle"
+          fontFamily="'Plus Jakarta Sans', sans-serif">Wedding</text>
+        <text x={cx - 80} y={cy + 8} fontSize="7.5" fill="var(--ink4)" textAnchor="middle"
+          fontFamily="'Plus Jakarta Sans', sans-serif">Spandau →</text>
+
+        {/* User position — Brandenburg Gate */}
+        <circle cx={cx} cy={cy} r={12} fill="none" stroke="var(--teal)" strokeWidth="1" opacity="0.35"
+          style={{ animation: "breathe 3s ease infinite" }} />
+        <circle cx={cx} cy={cy} r={5} fill="var(--teal)" />
+        <text x={cx} y={cy + 20} fontSize="7.5" fill="var(--teal)" textAnchor="middle"
+          fontWeight="600" fontFamily="'Plus Jakarta Sans', sans-serif">You · Mitte</text>
+
+        {/* Legend */}
+        <g transform="translate(10, 10)">
+          <circle cx="5" cy="5" r="4" fill="var(--coral)" opacity="0.7" />
+          <text x="12" y="9" fontSize="7" fill="var(--ink3)" fontFamily="'Plus Jakarta Sans', sans-serif">Active jam</text>
+          <line x1="1" y1="20" x2="9" y2="20" stroke="var(--gold)" strokeWidth="3" strokeLinecap="round" opacity="0.65" />
+          <text x="12" y="24" fontSize="7" fill="var(--ink3)" fontFamily="'Plus Jakarta Sans', sans-serif">Monitoring</text>
+        </g>
+      </svg>
+
+      {/* Zone list */}
+      <div style={{ marginTop: 10 }}>
+        {BERLIN_JAM_ZONES.map(z => (
+          <div key={z.id}
+            onClick={() => setSelectedZone(cur => cur === z.id ? null : z.id)}
+            style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "7px 8px", borderBottom: "1px solid var(--border2)",
+              cursor: "pointer",
+              background: selectedZone === z.id ? "var(--teal-pale)" : "transparent",
+              borderRadius: 4,
+            }}>
+            <div>
+              <div style={{ fontSize: 12, color: "var(--ink2)", fontWeight: 500 }}>{z.name}</div>
+              <div style={{ fontSize: 10, color: "var(--ink4)" }}>since {z.since}</div>
+            </div>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <div style={{ width: 40, height: 4, borderRadius: 2, background: "var(--border)", overflow: "hidden" }}>
+                <div style={{ height: "100%", width: `${z.severity * 100}%`, background: z.active ? "var(--coral)" : "var(--gold)", borderRadius: 2 }} />
+              </div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: z.active ? "var(--coral)" : "var(--gold)", minWidth: 28 }}>
+                {Math.round(z.severity * 100)}%
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function MapScreen() {
-  const [view, setView]       = useState("jam");
-  const [zoom, setZoom]       = useState(1);
-  const [selected, setSelected] = useState(null);
+  const [view, setView]             = useState("jam");
+  const [zoom, setZoom]             = useState(1);
+  const [selected, setSelected]     = useState(null);
+  const [selectedZone, setSelectedZone] = useState(null);
 
   const sel = selected !== null ? JAM_MAP_NODES[selected] : null;
+  const selZone = selectedZone ? BERLIN_JAM_ZONES.find(z => z.id === selectedZone) : null;
 
   const jamColor = (node) => {
     if (!node.active) return `rgba(90,122,92,${0.3 + node.severity * 0.3})`;
@@ -1106,91 +1568,145 @@ function MapScreen() {
 
       <div style={{ padding: "14px 16px 10px" }}>
         <div className="map-toggle">
-          <button className={view === "jam" ? "active" : ""} onClick={() => { setView("jam"); setSelected(null); }}>
-            Local · Jam Activity
+          <button className={view === "jam" ? "active" : ""} onClick={() => { setView("jam"); setSelected(null); setSelectedZone(null); }}>
+            Local · Berlin
           </button>
-          <button className={view === "global" ? "active" : ""} onClick={() => { setView("global"); setSelected(null); }}>
+          <button className={view === "global" ? "active" : ""} onClick={() => { setView("global"); setSelected(null); setSelectedZone(null); }}>
             Global · Mycelium Index
           </button>
         </div>
       </div>
 
-      <div className="map-zoom-row">
-        <button className="map-zoom-btn" disabled={zoom >= 3} onClick={() => setZoom(z => Math.min(z + 0.5, 3))}>+</button>
-        <span className="map-zoom-label">{Math.round(zoom * 100)}%</span>
-        <button className="map-zoom-btn" disabled={zoom <= 1} onClick={() => setZoom(z => Math.max(z - 0.5, 1))}>−</button>
-      </div>
-
-      <div className="map-container">
-        <div className="map-grid-bg" />
-        <div className="map-inner" style={{ transform: `scale(${zoom})` }}>
-          {/* Continent outlines — simplified SVG paths for effect */}
-          <svg width="100%" height="100%" viewBox="0 0 400 260" style={{ position: "absolute", inset: 0, opacity: 0.12 }}>
-            {/* Very rough continent blobs for visual reference */}
-            <ellipse cx="90"  cy="100" rx="45"  ry="28" fill="#2D7D6F" />  {/* N America */}
-            <ellipse cx="90"  cy="155" rx="28"  ry="22" fill="#2D7D6F" />  {/* S America */}
-            <ellipse cx="195" cy="90"  rx="38"  ry="22" fill="#2D7D6F" />  {/* Europe */}
-            <ellipse cx="220" cy="135" rx="35"  ry="28" fill="#2D7D6F" />  {/* Africa */}
-            <ellipse cx="290" cy="100" rx="60"  ry="36" fill="#2D7D6F" />  {/* Asia */}
-            <ellipse cx="330" cy="185" rx="24"  ry="18" fill="#2D7D6F" />  {/* Australia */}
-          </svg>
-
-          {JAM_MAP_NODES.map((node, i) => {
-            const color = view === "jam" ? jamColor(node) : globalColor(node);
-            const isActive = view === "jam" ? node.active : node.severity > 0.6;
-            return (
-              <div key={node.id}>
-                <div
-                  className="map-node"
-                  style={{
-                    left: `${node.x}%`, top: `${node.y}%`,
-                    width: node.size, height: node.size,
-                    background: color,
-                    boxShadow: selected === i ? `0 0 0 3px white, 0 0 0 5px ${color}` : "none",
-                    zIndex: selected === i ? 10 : 1,
-                  }}
-                  onClick={() => setSelected(selected === i ? null : i)}
-                >
-                  {isActive && (
-                    <div className="map-pulse"
-                      style={{
-                        width: node.size * 2.6, height: node.size * 2.6,
-                        background: color, opacity: 0.4,
-                      }} />
-                  )}
-                </div>
-                <div className="map-lbl" style={{ left: `${node.x}%`, top: `calc(${node.y}% + ${node.size / 2 + 3}px)` }}>
-                  {node.label}
+      {/* ── LOCAL: Berlin street map ── */}
+      {view === "jam" && (
+        <div style={{ padding: "0 16px" }}>
+          <div style={{ fontSize: 10, color: "var(--ink4)", marginBottom: 8, display: "flex", justifyContent: "space-between" }}>
+            <span>Berlin · Local Jam Activity</span>
+            <span>Updated 2 min ago</span>
+          </div>
+          <BerlinMap selectedZone={selectedZone} setSelectedZone={setSelectedZone} />
+          {selZone && (
+            <div className="map-detail" style={{ marginTop: 12 }}>
+              <div className="map-detail-city">{selZone.name}</div>
+              <div className="map-detail-row">
+                <div className="map-detail-stat">Jam Index</div>
+                <div className="map-detail-val">{fmt(selZone.severity)}</div>
+              </div>
+              <div className="map-detail-row">
+                <div className="map-detail-stat">Status</div>
+                <div className="map-detail-val" style={{ color: selZone.active ? "var(--coral)" : "var(--gold)" }}>
+                  {selZone.active ? "Active jam" : "Elevated monitoring"}
                 </div>
               </div>
-            );
-          })}
+              <div className="map-detail-row">
+                <div className="map-detail-stat">Details</div>
+                <div style={{ fontSize: 10, color: "var(--ink3)" }}>{selZone.note}</div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
-      {sel && (
+      {/* ── GLOBAL: world map with 20 city nodes ── */}
+      {view === "global" && (
+        <>
+          <div className="map-zoom-row">
+            <button className="map-zoom-btn" disabled={zoom >= 3} onClick={() => setZoom(z => Math.min(z + 0.5, 3))}>+</button>
+            <span className="map-zoom-label">{Math.round(zoom * 100)}%</span>
+            <button className="map-zoom-btn" disabled={zoom <= 1} onClick={() => setZoom(z => Math.max(z - 0.5, 1))}>−</button>
+          </div>
+          <div className="map-container">
+            <div className="map-grid-bg" />
+            <div className="map-inner" style={{ transform: `scale(${zoom})` }}>
+              {/* Continent outlines — equirectangular polygons */}
+              <svg width="100%" height="100%" viewBox="0 0 400 260" style={{ position: "absolute", inset: 0, opacity: 0.18 }}>
+                {/* North America */}
+                <polygon fill="#2D7D6F" points="
+                  2,32  38,18  82,12  128,15  158,28  162,46
+                  138,72 122,90 108,110 108,122
+                  82,115  70,100  58,75  45,58  10,44" />
+                {/* South America */}
+                <polygon fill="#2D7D6F" points="
+                  108,122 162,128 165,155 152,172 144,188
+                  132,195 125,212 110,190  98,155  92,132" />
+                {/* Europe */}
+                <polygon fill="#2D7D6F" points="
+                  168,68  174,55  182,48  192,38  202,24
+                  220,26  218,40  224,52  222,62  215,72
+                  205,74  178,72" />
+                {/* Africa */}
+                <polygon fill="#2D7D6F" points="
+                  178,72  202,66  218,68  232,72  244,98
+                  246,118  240,130  234,146  228,168  220,194
+                  212,200  200,192  192,162  188,130  170,106  172,76" />
+                {/* Asia (mainland) */}
+                <polygon fill="#2D7D6F" points="
+                  222,62  230,55  250,42  272,28  308,18
+                  350,18  385,22  396,45  388,65  362,72
+                  342,72  328,82  318,108  310,124  280,128
+                  266,100  258,104  248,98  238,84  222,68" />
+                {/* SE Asia / Indonesia hint */}
+                <ellipse cx="318" cy="138" rx="18" ry="10" fill="#2D7D6F" />
+                {/* Australia */}
+                <polygon fill="#2D7D6F" points="
+                  308,150  330,140  356,148  370,160
+                  366,185  350,200  312,198  304,175" />
+              </svg>
+
+              {JAM_MAP_NODES.map((node, i) => {
+                const color = globalColor(node);
+                const isActive = node.severity > 0.6;
+                return (
+                  <div key={node.id}>
+                    <div
+                      className="map-node"
+                      style={{
+                        left: `${node.x}%`, top: `${node.y}%`,
+                        width: node.size, height: node.size,
+                        background: color,
+                        boxShadow: selected === i ? `0 0 0 3px white, 0 0 0 5px ${color}` : "none",
+                        zIndex: selected === i ? 10 : 1,
+                        border: node.id === "berlin" ? "1.5px solid var(--teal)" : "none",
+                      }}
+                      onClick={() => setSelected(selected === i ? null : i)}
+                    >
+                      {isActive && (
+                        <div className="map-pulse" style={{ width: node.size * 2.6, height: node.size * 2.6, background: color, opacity: 0.4 }} />
+                      )}
+                    </div>
+                    <div className="map-lbl" style={{ left: `${node.x}%`, top: `calc(${node.y}% + ${node.size / 2 + 3}px)` }}>
+                      {node.label}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Global view detail panel */}
+      {view === "global" && sel && (
         <div className="map-detail">
           <div className="map-detail-city">{sel.label}</div>
           <div className="map-detail-row">
-            <div className="map-detail-stat">{view === "jam" ? "Jam Index" : "Mycelium Index"}</div>
-            <div className="map-detail-val">{fmt(view === "jam" ? sel.jamIndex : sel.severity)}</div>
+            <div className="map-detail-stat">Mycelium Index</div>
+            <div className="map-detail-val">{fmt(sel.severity)}</div>
           </div>
           <div className="map-detail-row">
             <div className="map-detail-stat">Status</div>
             <div className="map-detail-val" style={{ color: sel.active ? "var(--coral)" : "var(--sage)" }}>
-              {sel.active ? (view === "jam" ? "Active jam" : "Elevated") : "Monitoring"}
+              {sel.active ? "Active jam" : "Monitoring"}
             </div>
           </div>
-          {view === "jam" && sel.active && (
+          <div className="map-detail-row">
+            <div className="map-detail-stat">Network contribution</div>
+            <div className="map-detail-val">{Math.round(sel.severity * 14800).toLocaleString()} nodes</div>
+          </div>
+          {sel.active && (
             <div className="map-detail-row">
               <div className="map-detail-stat">Details</div>
               <div style={{ fontSize: 10, color: "var(--ink3)" }}>{sel.pop.split("·").slice(1).join("·").trim()}</div>
-            </div>
-          )}
-          {view === "global" && (
-            <div className="map-detail-row">
-              <div className="map-detail-stat">Network contribution</div>
-              <div className="map-detail-val">{Math.round(sel.severity * 14800).toLocaleString()} nodes</div>
             </div>
           )}
         </div>
@@ -1203,26 +1719,9 @@ function MapScreen() {
             <div>
               <div style={{ fontSize: 9, color: "var(--ink4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>Global Mycelium Index</div>
               <div style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 700, color: "var(--ink)" }}>{fmt(GLOBAL.myceliumIndex)}</div>
-              <div style={{ fontSize: 10, color: "var(--ink3)" }}>{GLOBAL.activeNodes.toLocaleString()} nodes active</div>
+              <div style={{ fontSize: 10, color: "var(--ink3)" }}>{GLOBAL.activeNodes.toLocaleString()} nodes active · {JAM_MAP_NODES.filter(n => n.active).length} cities jamming</div>
             </div>
           </div>
-        </div>
-      )}
-
-      {view === "jam" && !sel && (
-        <div style={{ padding: "10px 20px" }}>
-          <div style={{ fontSize: 9, color: "var(--ink4)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Active events</div>
-          {JAM_MAP_NODES.filter(n => n.active).map(n => (
-            <div key={n.id} style={{ display: "flex", justifyContent: "space-between", padding: "6px 0", borderBottom: "1px solid var(--border2)" }}>
-              <div style={{ fontSize: 12, color: "var(--ink2)", fontWeight: 500 }}>{n.label}</div>
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <div style={{ width: 40, height: 4, borderRadius: 2, background: "var(--border)", overflow: "hidden" }}>
-                  <div style={{ height: "100%", width: `${n.jamIndex * 100}%`, background: "var(--coral)", borderRadius: 2 }} />
-                </div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: "var(--coral)" }}>{fmt(n.jamIndex)}</div>
-              </div>
-            </div>
-          ))}
         </div>
       )}
     </div>
@@ -1362,7 +1861,7 @@ const NAV_ITEMS = [
 // ═══════════════════════════════════════════════════════════
 
 export default function App() {
-  const [onboarded, setOnboarded]             = useState(false);
+  const [introDone, setIntroDone]              = useState(false);
   const [screen, setScreen]                   = useState("chat");
   const [user, setUser]                       = useState(INITIAL_USER);
   const [tasks, setTasks]                     = useState(TASKS);
@@ -1398,10 +1897,10 @@ export default function App() {
     setHasContributedToday(true);
   };
 
-  if (!onboarded) {
+  if (!introDone) {
     return (
       <div className="app">
-        <Onboarding onDone={() => setOnboarded(true)} />
+        <Intro onDone={() => setIntroDone(true)} />
       </div>
     );
   }

@@ -444,7 +444,7 @@ function Intro({ onDone }) {
               You get answers shaped by many minds.
             </p>
             <p style={{ color: subColor, marginBottom: 16, lineHeight: 1.8 }}>Sometimes, it asks you something small.</p>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", color: textColor, fontSize: 18, marginBottom: 20 }}>Quick. Simple.</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, color: "var(--teal)", fontSize: 22, marginBottom: 20, letterSpacing: "-0.01em" }}>Quick. Simple.</p>
             <p style={{ color: subColor, lineHeight: 1.8 }}>
               That's how we measure alignment.<br />
               That's how we build it.
@@ -573,7 +573,7 @@ function Intro({ onDone }) {
             fontWeight: 700, lineHeight: 1.2,
             color: textColor, marginBottom: 28, letterSpacing: "-0.01em",
           }}>
-            You've come across<br /><em>The Jam.</em>
+            You've come across<br /><span style={{ color: "var(--coral)", fontStyle: "normal", fontWeight: 800, letterSpacing: "-0.02em" }}>The Jam.</span>
           </h1>
         )}
 

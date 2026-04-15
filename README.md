@@ -18,7 +18,7 @@
 - **Source repo:** https://github.com/ofa5406/mycelium
 - **Miro — thought process & documentation:** https://miro.com/app/board/uXjVGlJBEa8=/
 - **Miro — project frame & showreel:** https://miro.com/app/board/uXjVGCtKivA=/?moveToWidget=3458764667722710400&cot=14
-- **60 s showreel:** embedded on the Miro frame above
+- **4m showreel:** embedded on the Miro frame above
 
 ## The task
 

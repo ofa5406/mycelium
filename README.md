@@ -4,7 +4,7 @@
 
 ## Author & course
 
-- **Author:** Irem Durmus
+- **Author:** Ömer Faruk Aslan
 - **Studio:** Prompt City — Urban Vision Wolfsburg 2026
 - **Course:** IUDD Master, SoSe 2026
 - **Chair:** Informatics in Architecture and Urbanism (InfAU), Faculty of Architecture and Urbanism, Bauhaus-Universität Weimar
